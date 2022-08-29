@@ -10,17 +10,17 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type mongodb struct {
+type mongoDB struct {
 	db *mongo.Database
 }
 
 func NewuserMongo(dbConn *mongo.Database) users.Data {
-	return &mongodb{
+	return &mongoDB{
 		db: dbConn,
 	}
 }
 
-func (mongo mongodb) InsertData(core users.Core) error {
+func (mongo mongoDB) InsertData(core users.Core) error {
 	userModel := fromCore(core)
 	userModel.ID = primitive.NewObjectID()
 	ctx := context.Background()
@@ -32,7 +32,7 @@ func (mongo mongodb) InsertData(core users.Core) error {
 	return nil
 }
 
-func (mongo mongodb) GetData(id string) (users.Core, error) {
+func (mongo mongoDB) GetData(id string) (users.Core, error) {
 	userModel := User{}
 	objectID, objectIDErr := primitive.ObjectIDFromHex(id)
 	if objectIDErr != nil {

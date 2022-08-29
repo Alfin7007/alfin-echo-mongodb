@@ -23,7 +23,7 @@ func fromCore(core users.Core) User {
 
 func (u User) toCore() users.Core {
 	return users.Core{
-		ID:       u.ID.String(),
+		ID:       u.ID.Hex(),
 		Name:     u.Name,
 		Email:    u.Email,
 		Password: u.Password,
