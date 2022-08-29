@@ -2,30 +2,39 @@ package config
 
 import (
 	"context"
-	"fmt"
 	"os"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-func InitMongoDB() *mongo.Client {
+func InitMongoDB() *mongo.Database {
 	mongoAuth := map[string]string{
 		"dbUser": os.Getenv("DB_USER"),
 		"dbPass": os.Getenv("DB_PASS"),
 		"dbName": os.Getenv("DB_NAME"),
 	}
 
-	ctx := context.Background()
-	connectionString := fmt.Sprintf("mongodb://%s:%s@localhost:27017",
-		mongoAuth["dbUser"],
-		mongoAuth["dbPass"])
-
-	client, dbErr := mongo.Connect(ctx, options.Client().ApplyURI(connectionString))
-
-	if dbErr != nil {
-		panic(dbErr.Error())
+	credential := options.Credential{
+		AuthSource: mongoAuth["dbName"],
+		Username:   mongoAuth["dbUser"],
+		Password:   mongoAuth["dbPass"],
 	}
 
-	return client
+	clientOpts := options.Client().ApplyURI("mongodb://localhost:27017").SetAuth(credential)
+
+	client, dbErr := mongo.Connect(context.TODO(), clientOpts)
+	if dbErr != nil {
+		panic(dbErr)
+	}
+
+	pingErr := client.Ping(context.TODO(), readpref.Primary())
+	if pingErr != nil {
+		panic(pingErr)
+	}
+
+	db := client.Database(mongoAuth["dbName"])
+
+	return db
 }
