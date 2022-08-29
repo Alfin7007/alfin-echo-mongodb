@@ -9,6 +9,6 @@ import (
 func InitRoute(presenter factory.Presenter) *echo.Echo {
 	e := echo.New()
 	e.POST("/users", presenter.UserPresenter.RegistrasiUser)
-
+	e.GET("/users/:id", presenter.UserPresenter.GetUser)
 	return e
 }

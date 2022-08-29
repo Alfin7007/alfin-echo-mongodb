@@ -32,3 +32,12 @@ func (h *UserHandler) RegistrasiUser(c echo.Context) error {
 
 	return c.JSON(helper.SuccessInsert())
 }
+
+func (h *UserHandler) GetUser(c echo.Context) error {
+	id := c.Param("id")
+	userCore, getErr := h.userBussiness.GetUser(id)
+	if getErr != nil {
+		return c.JSON(helper.BadRequest())
+	}
+	return c.JSON(helper.SuccessGetData(userCore))
+}

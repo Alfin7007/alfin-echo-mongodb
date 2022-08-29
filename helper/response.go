@@ -15,3 +15,11 @@ func SuccessInsert() (int, map[string]interface{}) {
 		"message": "success insert",
 	}
 }
+
+func SuccessGetData(data interface{}) (int, map[string]interface{}) {
+	return http.StatusOK, map[string]interface{}{
+		"code":    http.StatusOK,
+		"message": "success get data",
+		"data":    data,
+	}
+}

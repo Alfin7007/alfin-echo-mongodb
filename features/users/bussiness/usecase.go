@@ -2,6 +2,7 @@ package bussiness
 
 import (
 	"explore/mongodb/features/users"
+	"log"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -27,4 +28,14 @@ func (b *UserBussiness) Register(core users.Core) error {
 		return inserErr
 	}
 	return nil
+}
+
+func (b *UserBussiness) GetUser(id string) (users.Core, error) {
+	userCore, getErr := b.userData.GetData(id)
+	if getErr != nil {
+		log.Println(getErr)
+		return users.Core{}, getErr
+	}
+
+	return userCore, nil
 }

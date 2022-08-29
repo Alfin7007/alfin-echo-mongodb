@@ -9,8 +9,10 @@ type Core struct {
 
 type Data interface {
 	InsertData(Core) error
+	GetData(id string) (Core, error)
 }
 
 type Bussiness interface {
 	Register(Core) error
+	GetUser(id string) (Core, error)
 }
