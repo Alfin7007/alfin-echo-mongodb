@@ -41,3 +41,10 @@ func SuccessLogin(id, token string) (int, map[string]interface{}) {
 		},
 	}
 }
+
+func Forbidden() (int, map[string]interface{}) {
+	return http.StatusForbidden, map[string]interface{}{
+		"code":    http.StatusForbidden,
+		"message": "not authorized",
+	}
+}

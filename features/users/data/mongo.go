@@ -22,7 +22,6 @@ func NewuserMongo(dbConn *mongo.Database) users.Data {
 
 func (mongo mongoDB) InsertData(core users.Core) error {
 	userModel := fromCore(core)
-	userModel.ID = primitive.NewObjectID()
 	ctx := context.Background()
 	_, err := mongo.db.Collection("user").InsertOne(ctx, userModel)
 	if err != nil {

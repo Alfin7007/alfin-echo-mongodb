@@ -15,6 +15,7 @@ type User struct {
 
 func fromCore(core users.Core) User {
 	return User{
+		ID:       primitive.NewObjectID(),
 		Name:     core.Name,
 		Email:    core.Email,
 		Password: core.Password,

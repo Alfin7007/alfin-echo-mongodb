@@ -3,7 +3,9 @@ package presentation
 import (
 	"explore/mongodb/features/users"
 	"explore/mongodb/features/users/presentation/request"
+	"explore/mongodb/features/users/presentation/response"
 	"explore/mongodb/helper"
+	"explore/mongodb/middlewares"
 
 	"github.com/labstack/echo/v4"
 )
@@ -34,10 +36,13 @@ func (h *UserHandler) RegistrasiUser(c echo.Context) error {
 }
 
 func (h *UserHandler) GetUser(c echo.Context) error {
-	id := c.Param("id")
-	userCore, getErr := h.userBussiness.GetUser(id)
+	userID, tokenErr := middlewares.ExtracToken(c)
+	if tokenErr != nil {
+		return c.JSON(helper.Forbidden())
+	}
+	userCore, getErr := h.userBussiness.GetUser(userID)
 	if getErr != nil {
 		return c.JSON(helper.BadRequest())
 	}
-	return c.JSON(helper.SuccessGetData(userCore))
+	return c.JSON(helper.SuccessGetData(response.FromCore(userCore)))
 }

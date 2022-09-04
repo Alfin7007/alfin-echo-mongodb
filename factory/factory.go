@@ -9,12 +9,17 @@ import (
 	authData "explore/mongodb/features/auth/data"
 	authPresent "explore/mongodb/features/auth/presentation"
 
+	checklistBussiness "explore/mongodb/features/checklist/bussiness"
+	checklistData "explore/mongodb/features/checklist/data"
+	checklistPresent "explore/mongodb/features/checklist/presentation"
+
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Presenter struct {
-	UserPresenter *userPresent.UserHandler
-	AuthPresenter *authPresent.AuthHandler
+	UserPresenter      *userPresent.UserHandler
+	AuthPresenter      *authPresent.AuthHandler
+	ChecklistPresenter *checklistPresent.ChecklistBussiness
 }
 
 func InitFactory(db *mongo.Database) Presenter {
@@ -26,8 +31,13 @@ func InitFactory(db *mongo.Database) Presenter {
 	newAuthBussiness := authBussiness.NewAuthBussiness(newAuthData)
 	newAuthPresentation := authPresent.NewAuthHandler(newAuthBussiness)
 
+	newChecklistData := checklistData.NewChecklistRepo(db)
+	newChecklistBussiness := checklistBussiness.ChecklistBussiness(newChecklistData)
+	newChecklistPresentation := checklistPresent.ChecklistHandler(newChecklistBussiness)
+
 	return Presenter{
-		UserPresenter: newUserPresentation,
-		AuthPresenter: newAuthPresentation,
+		UserPresenter:      newUserPresentation,
+		AuthPresenter:      newAuthPresentation,
+		ChecklistPresenter: newChecklistPresentation,
 	}
 }
