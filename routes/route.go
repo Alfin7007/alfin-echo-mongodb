@@ -18,7 +18,10 @@ func InitRoute(presenter factory.Presenter) *echo.Echo {
 	e.GET("/checklist", presenter.ChecklistPresenter.GetData, middlewares.JWTMIddleware())
 	e.DELETE("/checklist/:id", presenter.ChecklistPresenter.DeleteCheclist, middlewares.JWTMIddleware())
 
-	e.POST("/items/:id", presenter.ItemPresenter.InsertItem, middlewares.JWTMIddleware())
-	e.GET("/items/:id", presenter.ItemPresenter.GetItems, middlewares.JWTMIddleware())
+	e.POST("/checklist/:checklistID/items", presenter.ItemPresenter.InsertItem, middlewares.JWTMIddleware())
+	e.GET("/checklist/:checklistID/items", presenter.ItemPresenter.GetItems, middlewares.JWTMIddleware())
+	e.GET("/checklist/:checklistID/items/:id", presenter.ItemPresenter.GetOneItem, middlewares.JWTMIddleware())
+	e.DELETE("/checklist/:checklistID/items/:id", presenter.ItemPresenter.DeleteOneItem, middlewares.JWTMIddleware())
+	e.PUT("/checklist/:checklistID/items/:id/status/:status", presenter.ItemPresenter.UpdateOneItem, middlewares.JWTMIddleware())
 	return e
 }

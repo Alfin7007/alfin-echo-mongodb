@@ -16,6 +16,13 @@ func BadRequest() (int, map[string]interface{}) {
 	}
 }
 
+func NotFound() (int, map[string]interface{}) {
+	return http.StatusNotFound, map[string]interface{}{
+		"code":    http.StatusNotFound,
+		"message": "not found",
+	}
+}
+
 func BadRequestWithMSG(msg string) (int, map[string]interface{}) {
 	return http.StatusBadRequest, map[string]interface{}{
 		"code":    http.StatusBadRequest,
