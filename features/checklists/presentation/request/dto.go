@@ -1,6 +1,6 @@
 package request
 
-import "explore/mongodb/features/checklist"
+import checklist "explore/mongodb/features/checklists"
 
 type Checklist struct {
 	Name   string

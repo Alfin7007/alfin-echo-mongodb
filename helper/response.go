@@ -2,6 +2,13 @@ package helper
 
 import "net/http"
 
+func StatusOK() (int, map[string]interface{}) {
+	return http.StatusOK, map[string]interface{}{
+		"code":    http.StatusOK,
+		"message": "success",
+	}
+}
+
 func BadRequest() (int, map[string]interface{}) {
 	return http.StatusBadRequest, map[string]interface{}{
 		"code":    http.StatusBadRequest,

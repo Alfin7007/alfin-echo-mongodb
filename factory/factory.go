@@ -9,9 +9,13 @@ import (
 	authData "explore/mongodb/features/auth/data"
 	authPresent "explore/mongodb/features/auth/presentation"
 
-	checklistBussiness "explore/mongodb/features/checklist/bussiness"
-	checklistData "explore/mongodb/features/checklist/data"
-	checklistPresent "explore/mongodb/features/checklist/presentation"
+	checklistBussiness "explore/mongodb/features/checklists/bussiness"
+	checklistData "explore/mongodb/features/checklists/data"
+	checklistPresent "explore/mongodb/features/checklists/presentation"
+
+	itemBussiness "explore/mongodb/features/items/bussiness"
+	itemData "explore/mongodb/features/items/data"
+	itemPresent "explore/mongodb/features/items/presentation"
 
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -20,6 +24,7 @@ type Presenter struct {
 	UserPresenter      *userPresent.UserHandler
 	AuthPresenter      *authPresent.AuthHandler
 	ChecklistPresenter *checklistPresent.ChecklistBussiness
+	ItemPresenter      *itemPresent.ItemHandler
 }
 
 func InitFactory(db *mongo.Database) Presenter {
@@ -35,9 +40,14 @@ func InitFactory(db *mongo.Database) Presenter {
 	newChecklistBussiness := checklistBussiness.ChecklistBussiness(newChecklistData)
 	newChecklistPresentation := checklistPresent.ChecklistHandler(newChecklistBussiness)
 
+	newItemData := itemData.RepoItem(db)
+	newItemBussiness := itemBussiness.NewItemBussiness(newItemData)
+	newItemPresentation := itemPresent.NewItemHandler(newItemBussiness)
+
 	return Presenter{
 		UserPresenter:      newUserPresentation,
 		AuthPresenter:      newAuthPresentation,
 		ChecklistPresenter: newChecklistPresentation,
+		ItemPresenter:      &newItemPresentation,
 	}
 }

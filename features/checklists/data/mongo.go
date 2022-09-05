@@ -2,10 +2,11 @@ package data
 
 import (
 	"context"
-	"explore/mongodb/features/checklist"
+	checklist "explore/mongodb/features/checklists"
 	"log"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -43,6 +44,16 @@ func (mongo *checklistMongo) FindData(userID string) ([]checklist.Core, error) {
 		}
 		checklistModel = append(checklistModel, temp)
 	}
-
 	return toCoreList(checklistModel), nil
+}
+
+func (mongo *checklistMongo) DeleteData(userID, id string) error {
+	objectID, _ := primitive.ObjectIDFromHex(id)
+	filter := bson.M{"_id": objectID, "user_id": userID}
+	result, err := mongo.db.Collection("checklist").DeleteOne(context.TODO(), filter)
+	if err != nil || result.DeletedCount == 0 {
+		return err
+	}
+
+	return nil
 }

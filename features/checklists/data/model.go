@@ -1,7 +1,7 @@
 package data
 
 import (
-	"explore/mongodb/features/checklist"
+	checklist "explore/mongodb/features/checklists"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

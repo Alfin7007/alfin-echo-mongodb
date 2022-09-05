@@ -8,9 +8,9 @@ import (
 
 type User struct {
 	ID       primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
-	Name     string             `json:"name"`
-	Email    string             `json:"email"`
-	Password string             `json:"password"`
+	Name     string             `bson:"name"`
+	Email    string             `bson:"email"`
+	Password string             `bson:"password"`
 }
 
 func fromCore(core users.Core) User {

@@ -1,6 +1,6 @@
 package bussiness
 
-import "explore/mongodb/features/checklist"
+import checklist "explore/mongodb/features/checklists"
 
 type checklistData struct {
 	data checklist.Data
@@ -26,4 +26,12 @@ func (uc *checklistData) GetData(useID string) ([]checklist.Core, error) {
 		return []checklist.Core{}, err
 	}
 	return result, nil
+}
+
+func (uc *checklistData) DeleteChecklist(userID, id string) error {
+	err := uc.data.DeleteData(userID, id)
+	if err != nil {
+		return err
+	}
+	return nil
 }

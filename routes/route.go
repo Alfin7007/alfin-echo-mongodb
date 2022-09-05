@@ -16,5 +16,9 @@ func InitRoute(presenter factory.Presenter) *echo.Echo {
 
 	e.POST("/checklist", presenter.ChecklistPresenter.CreateData, middlewares.JWTMIddleware())
 	e.GET("/checklist", presenter.ChecklistPresenter.GetData, middlewares.JWTMIddleware())
+	e.DELETE("/checklist/:id", presenter.ChecklistPresenter.DeleteCheclist, middlewares.JWTMIddleware())
+
+	e.POST("/items/:id", presenter.ItemPresenter.InsertItem, middlewares.JWTMIddleware())
+	e.GET("/items/:id", presenter.ItemPresenter.GetItems, middlewares.JWTMIddleware())
 	return e
 }

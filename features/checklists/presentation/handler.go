@@ -1,8 +1,8 @@
 package presentation
 
 import (
-	"explore/mongodb/features/checklist"
-	"explore/mongodb/features/checklist/presentation/request"
+	checklist "explore/mongodb/features/checklists"
+	"explore/mongodb/features/checklists/presentation/request"
 	"explore/mongodb/helper"
 	"explore/mongodb/middlewares"
 	"log"
@@ -51,4 +51,18 @@ func (h *ChecklistBussiness) GetData(c echo.Context) error {
 		return c.JSON(helper.BadRequest())
 	}
 	return c.JSON(helper.SuccessGetData(result))
+}
+
+func (h *ChecklistBussiness) DeleteCheclist(c echo.Context) error {
+	userID, tokenErr := middlewares.ExtracToken(c)
+	if tokenErr != nil {
+		return c.JSON(helper.Forbidden())
+	}
+	id := c.Param("id")
+
+	err := h.bussiness.DeleteChecklist(userID, id)
+	if err != nil {
+		return c.JSON(helper.BadRequest())
+	}
+	return c.JSON(helper.StatusOK())
 }
